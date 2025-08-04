@@ -2,6 +2,8 @@ const express = require("express");
 const { onRequest } = require("firebase-functions/v2/https");
 const OpenAI = require("openai");
 const chatResponseSchema = require("./models/chatResponseSchema");
+const tagResponseSchema = require("./models/tagResponseSchema");
+const { MASTER_TAG_LIST } = require("./utils/tags");
 
 const { defineSecret } = require("firebase-functions/params");
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
@@ -85,15 +87,57 @@ router.post("/pro-active", async (req, res, _) => {
   }
 });
 
-router.post("/tag-habits", (req, res, _) => {
+router.post("/tag-habits", async (req, res, _) => {
   const habitsData = req.body;
+  console.log("Tagging habits data:", req.body);
 
-  // objective: apply 1-5 tags on each of the habits from the "MASTER TAG LIST"
-  // plus, use the cheapest possible openai model for this job as well
+  try {
+    // objective: apply 1-5 tags on each of the habits from the "MASTER TAG LIST"
+    // plus, use the cheapest possible openai model for this job as well
+    const response = await client.responses.create({
+      model: "gpt-4o-mini", // cheaper model for tagging task
+      input: [
+        {
+          role: "user",
+          content: `Please assign 1-5 relevant tags to each of the following habits using ONLY tags from this master list: ${MASTER_TAG_LIST.join(
+            ", "
+          )}
+          
+          Habits to tag: ${JSON.stringify(habitsData)}
+          
+          Return the result as an array of objects, each with habitId and tags properties.`,
+        },
+      ],
+      tools: tagResponseSchema, // schema for structured habit tagging
+    });
+
+    let result = null;
+    console.log("Tag response:", response);
+
+    if ("arguments" in response.output[0]) {
+      // the function calling is working correctly
+      result = JSON.parse(response.output[0].arguments);
+      // Return the habitTags array directly
+      res.json(result.habitTags);
+    } else {
+      // fallback if function calling fails
+      console.log("Function calling failed for tagging");
+      res.status(500).json({
+        error: "Failed to generate habit tags",
+        success: false,
+      });
+    }
+  } catch (err) {
+    console.log("Error in tag-habits:", err);
+    res.status(500).json({
+      error: "Internal server error",
+      success: false,
+    });
+  }
 });
 
-// Mount the router on /habit-mentor:
-// app.use("/habit-mentor", router);
+// Mount the router to the app
+app.use("/", router);
 
 exports.api = onRequest(
   {
