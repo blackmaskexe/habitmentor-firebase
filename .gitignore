@@ -67,3 +67,12 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Firebase project config
+.firebaserc
+
+# Debug logs
+*-debug.log
+
+# Training data (optional)
+*.jsonl
