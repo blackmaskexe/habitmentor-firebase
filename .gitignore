@@ -76,3 +76,8 @@ node_modules/
 
 # Training data (optional)
 *.jsonl
+
+# macos
+.DS_Store
+
+
