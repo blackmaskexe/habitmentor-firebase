@@ -9,7 +9,10 @@ export async function getAiChatResponse(
   const response = await aiClient.responses.create({
     model: "gpt-4.1-nano-2025-04-14",
     input: [{ role: "user", content: JSON.stringify(userData) }],
-    tools: chatResponseSchema, // schema for structured AI response with function calling
+    tools: chatResponseSchema.map((tool: any) => ({
+      ...tool,
+      type: "function",
+    })),
   });
 
   let args: AiResponseType;

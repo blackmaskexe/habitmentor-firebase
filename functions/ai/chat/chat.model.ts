@@ -40,7 +40,6 @@ const chatResponseSchema = [
       required: ["response", "importantMessage", "actionableSteps"],
       additionalProperties: false,
     },
-    strict: true,
   },
 ];
 
