@@ -9,6 +9,7 @@
   "author": "blackmaskexe",
   "license": "ISC",
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "openai": "^5.12.1"
   }
 }
