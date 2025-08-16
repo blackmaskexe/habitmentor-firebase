@@ -3,6 +3,7 @@ import { HabitObject } from "../../utils/types";
 import { taggingPrompt } from "./tagging.prompt";
 import { tagResponseSchema } from "./tagging.model";
 import { TagResponse } from "../../utils/types";
+
 export async function getTagsForHabits(
   habitsData: HabitObject[],
   client: OpenAI

@@ -3,24 +3,20 @@ import { proActiveRecommendationPrompt } from "./recommendations.prompt";
 export async function getProActiveRecommendation(userData, client) {
   try {
     const response = await client.responses.create({
-      model: "gpt-4.1-nano-2025-04-14", // replace fine tuned model with regular 4.1 nano
+      model: "gpt-4.1-nano-2025-04-14",
       input: [
         {
           role: "user",
-          content: proActiveRecommendationPrompt + userData,
+          content: proActiveRecommendationPrompt(userData),
         },
       ],
     });
-
-    const aiResponse =
+    return (
       response.output_text ||
-      "There was some error generating the response it seems. Try again later.";
-    return aiResponse;
+      "There was some error generating the response it seems. Try again later."
+    );
   } catch (err) {
     console.log(err);
-
-    const errorMessage =
-      "There was some error generating the response it seems. Try again later.";
-    return errorMessage;
+    return "There was some error generating the response it seems. Try again later.";
   }
 }
