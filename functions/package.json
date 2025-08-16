@@ -2,10 +2,14 @@
   "name": "habitmentor-firebase-functions",
   "version": "1.0.0",
   "description": "backend for habitmentor-ai, an AI powerer habit tracking application",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ."
+    "lint": "echo \"no linting\"",
+    "build": "tsc",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "deploy": "npm run build && firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
   "author": "blackmaskexe",
   "license": "ISC",
@@ -13,16 +17,12 @@
     "@expo/vector-icons": "^14.1.0",
     "express": "^5.1.0",
     "firebase": "^12.1.0",
+    "firebase-admin": "^13.4.0",
     "firebase-functions": "^6.4.0",
     "openai": "^5.12.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
-    "eslint": "^9.33.0",
-    "eslit": "^6.0.0",
     "globals": "^16.3.0",
-    "jiti": "^2.5.1",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.39.1"
+    "typescript": "^5.9.2"
   }
 }
