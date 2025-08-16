@@ -1,7 +1,7 @@
 import { getAiChatResponse } from "./chat.service";
-import { AiResponseType } from "./types";
+import { AiResponseType } from "../../utils/types";
 
-async function postChat(req, res, _) {
+export async function postChat(req, res, _, client) {
   try {
     const userData = req.body;
     console.log("Sneaky text message siphon", userData);

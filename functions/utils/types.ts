@@ -15,3 +15,28 @@ export interface HabitObject {
   startDate?: string; // formattedDate (see date.ts)
   tags?: string[];
 }
+
+export type UserMessageType = {
+  id: string;
+  sender: string;
+  content: string;
+  $createdAt: Date;
+  loading: boolean;
+  additionalData?: {
+    actionableSteps?: string[];
+  };
+};
+
+export type AiResponseType = {
+  actionableSteps: string[];
+  importantMessage: boolean;
+  response: string;
+};
+
+export type tagItem = {
+  habitId: string;
+  tags: string[];
+};
+export type TagResponse = {
+  habitTags: tagItem[];
+};

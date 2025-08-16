@@ -56,16 +56,18 @@ export const tagResponseSchema = [
 // ]
 
 // Expected response format:
-// [
-//   {
-//     habitId: '123',
-//     tags: ['exercise', 'strength', 'health', 'fitness']
-//   },
-//   {
-//     habitId: '456',
-//     tags: ['mindfulness', 'journaling', 'therapy', 'focus']
-//   }
-// ]
+// {
+//   habitTags: [
+//     {
+//       habitId: "123",
+//       tags: ["exercise", "strength", "health", "fitness"],
+//     },
+//     {
+//       habitId: "456",
+//       tags: ["mindfulness", "journaling", "therapy", "focus"],
+//     },
+//   ];
+// }
 
 export const MASTER_TAG_LIST = [
   // === BROAD CATEGORIES ===

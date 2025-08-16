@@ -1,5 +1,5 @@
 import chatResponseSchema from "./chat.model";
-import { AiResponseType, UserMessageType } from "./types";
+import { AiResponseType, UserMessageType } from "../../utils/types";
 import { OpenAI } from "openai";
 
 export async function getAiChatResponse(
