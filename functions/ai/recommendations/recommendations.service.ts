@@ -1,6 +1,11 @@
+import OpenAI from "openai";
 import { proActiveRecommendationPrompt } from "./recommendations.prompt";
+import { ProActiveRequestPayload } from "../../utils/types";
 
-export async function getProActiveRecommendation(userData, client) {
+export async function getProActiveRecommendation(
+  userData: ProActiveRequestPayload,
+  client: OpenAI
+) {
   try {
     const response = await client.responses.create({
       model: "gpt-4.1-nano-2025-04-14",

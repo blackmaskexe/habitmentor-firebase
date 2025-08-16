@@ -1,8 +1,15 @@
 import { getTagsForHabits } from "./tagging.service";
 import { HabitObject, tagItem } from "../../utils/types";
+import { Request, Response, NextFunction } from "express";
+import OpenAI from "openai";
 
 // Controller function for POST /tag-habits
-export async function postTagHabits(req, res, _, client) {
+export async function postTagHabits(
+  req: Request,
+  res: Response,
+  _: NextFunction,
+  client: OpenAI
+) {
   const habitsData: HabitObject[] = req.body;
   console.log("Tagging habits data:", habitsData);
 

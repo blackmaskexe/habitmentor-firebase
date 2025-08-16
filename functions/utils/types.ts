@@ -33,6 +33,11 @@ export type AiResponseType = {
   response: string;
 };
 
+export type ProActiveRequestPayload = {
+  habitCompletionCollection: any[];
+  importantMessages: string[];
+};
+
 export type tagItem = {
   habitId: string;
   tags: string[];

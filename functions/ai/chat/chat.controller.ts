@@ -1,7 +1,14 @@
 import { getAiChatResponse } from "./chat.service";
 import { AiResponseType } from "../../utils/types";
+import { Request, Response, NextFunction } from "express";
+import OpenAI from "openai";
 
-export async function postChat(req, res, _, client) {
+export async function postChat(
+  req: Request,
+  res: Response,
+  _: NextFunction,
+  client: OpenAI
+) {
   try {
     const userData = req.body;
     console.log("Sneaky text message siphon", userData);

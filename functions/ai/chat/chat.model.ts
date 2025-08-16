@@ -1,9 +1,3 @@
-type AIResponseType = {
-  response: String;
-  importantMessage: Boolean;
-  actionableSteps: string[];
-};
-
 const chatResponseSchema = [
   {
     type: "function",
