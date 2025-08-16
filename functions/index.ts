@@ -2,8 +2,7 @@ import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
 import OpenAI from "openai";
 import { defineSecret } from "firebase-functions/params";
-import { createChatRouter } from "./ai/chat/chat.routes";
-import { createTaggingRouter } from "./ai/tagging/tagging.route";
+import { createMainRouter } from "./routes";
 
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
 const app = express();
@@ -23,8 +22,7 @@ exports.api = onRequest(
     if (!client) {
       client = new OpenAI({ apiKey: key });
       // Register routers after client is initialized
-      app.use("/", createChatRouter(client));
-      app.use("/", createTaggingRouter(client));
+      app.use("/", createMainRouter(client));
     }
     app(req, res);
   }
