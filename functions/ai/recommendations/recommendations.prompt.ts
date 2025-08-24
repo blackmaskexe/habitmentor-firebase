@@ -17,6 +17,6 @@ export function emotionAwareRecommendationPrompt(
 ) {
   return `If the userHabitMetadata contains no relevant information, tell them to do more habits before getting valid advice.
   This is the user's habit metadata information for the past few days: ${userData}
-  The user's mood is based on numbers between 1 and 4. Look for patterns in the user's habits and their mood, and give
+  The user's mood is based on numbers between 0 and 1. Look for patterns in the user's habits and their mood, and give
   them emotion-aware recommendations on what they can do in order to improve at their habits. Note: Try and keep the response below 50-70 words, but going a litlte bit over is fine too`;
 }
