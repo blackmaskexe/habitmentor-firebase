@@ -38,6 +38,14 @@ export type ProActiveRequestPayload = {
   importantMessages: string[];
 };
 
+export type EmotionAwareSuggestionRequestPayload = {
+  dailyMetadataRecords: {
+    moodRating?: number;
+    habitCompletionRate?: number;
+    missedHabits?: string[]; // array of habitId
+  };
+};
+
 export type tagItem = {
   habitId: string;
   tags: string[];

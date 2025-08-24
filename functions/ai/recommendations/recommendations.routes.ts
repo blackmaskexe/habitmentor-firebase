@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { postProActiveRecommendation } from "./recommendations.controller";
+import {
+  postEmotionAwareRecommendation,
+  postProActiveRecommendation,
+} from "./recommendations.controller";
 import OpenAI from "openai";
 
 export function createRecommendationsRouter(client: OpenAI) {
@@ -7,5 +10,10 @@ export function createRecommendationsRouter(client: OpenAI) {
   router.post("/pro-active", (req, res, next) =>
     postProActiveRecommendation(req, res, next, client)
   );
+
+  router.post("/emotion-aware-suggestions", (req, res, next) => {
+    postEmotionAwareRecommendation(req, res, next, client);
+  });
+
   return router;
 }
