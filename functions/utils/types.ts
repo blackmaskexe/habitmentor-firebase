@@ -40,9 +40,11 @@ export type ProActiveRequestPayload = {
 
 export type EmotionAwareSuggestionRequestPayload = {
   dailyMetadataRecords: {
-    moodRating?: number;
-    habitCompletionRate?: number;
-    missedHabits?: string[]; // array of habitId
+    [date: string]: {
+      moodRating?: number;
+      habitCompletionRate?: number;
+      missedHabits?: string[]; // array of habitId
+    };
   };
 };
 

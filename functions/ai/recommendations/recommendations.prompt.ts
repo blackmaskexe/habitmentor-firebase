@@ -16,7 +16,12 @@ export function emotionAwareRecommendationPrompt(
   userData: EmotionAwareSuggestionRequestPayload
 ) {
   return `If the userHabitMetadata contains no relevant information, tell them to do more habits before getting valid advice.
-  This is the user's habit metadata information for the past few days: ${userData}
+  This is the user's habit metadata information for the past few days: ${JSON.stringify(
+    userData
+  )}
   The user's mood is based on numbers between 0 and 1. Look for patterns in the user's habits and their mood, and give
-  them emotion-aware recommendations on what they can do in order to improve at their habits. Note: Try and keep the response below 50-70 words, but going a litlte bit over is fine too`;
+  them emotion-aware recommendations on what they can do in order to improve at their habits. Note: Try and keep the response below 50-70 words, but going a litlte bit over is fine too
+  For example, try connecting the user's poor mood with their lack of doing certain habits, happy mood with completing certain habits, and so on.
+  The userHabitMetadata that you will receive will contain of key-value pairs, where each key is the date associated, and the value will contain things like user's mood from 0 to 1, the habits they've missed, and the habit completion rate.
+  Use these information in order to give them tailored recommendations to improve their well-being as well as habit consistency.`;
 }

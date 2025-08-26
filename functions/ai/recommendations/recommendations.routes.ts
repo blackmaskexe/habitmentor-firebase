@@ -11,7 +11,7 @@ export function createRecommendationsRouter(client: OpenAI) {
     postProActiveRecommendation(req, res, next, client)
   );
 
-  router.post("/emotion-aware-suggestions", (req, res, next) => {
+  router.post("/emotion-aware-suggestion", (req, res, next) => {
     postEmotionAwareRecommendation(req, res, next, client);
   });
 

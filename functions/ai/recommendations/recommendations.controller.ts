@@ -38,7 +38,8 @@ export async function postEmotionAwareRecommendation(
 ) {
   try {
     const userData = req.body;
-    console.log("Sneaky text message siphon", userData);
+    console.log("I like my cheese drippy brah", userData);
+
     const aiResponse = await getEmotionAwareSuggestion(userData, client);
     res.json({
       response: aiResponse,
