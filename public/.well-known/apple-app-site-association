@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "T296YJXC87.com.blackmaskexe.habittracker",
+        "paths": ["*", "/"]
+      }
+    ]
+  }
+}
