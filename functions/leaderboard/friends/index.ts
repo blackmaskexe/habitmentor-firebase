@@ -1,7 +1,6 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
-import * as admin from "firebase-admin";
-
-const db = admin.firestore();
+import { db } from "../../firebaseAdmin";
+import { FieldValue } from "firebase-admin/firestore";
 
 /**
  * Sends a friend request from the calling user to the recipient.
@@ -45,7 +44,7 @@ export const sendFriendRequest = onCall(async (request) => {
     status: "pending_sent",
     nickname: recipientData.nickname,
     avatarIcon: recipientData.avatarIcon,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
   });
 
   // Create "pending_received" doc in the recipient's subcollection
@@ -58,7 +57,7 @@ export const sendFriendRequest = onCall(async (request) => {
     status: "pending_received",
     nickname: senderData.nickname,
     avatarIcon: senderData.avatarIcon,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
   });
 
   await batch.commit();
