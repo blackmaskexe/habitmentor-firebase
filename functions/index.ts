@@ -1,8 +1,18 @@
+// API IMPORTS:
 import express from "express";
 import { onRequest } from "firebase-functions/v2/https";
 import OpenAI from "openai";
 import { defineSecret } from "firebase-functions/params";
 import { createMainRouter } from "./routes";
+import * as admin from "firebase-admin";
+
+admin.initializeApp();
+
+// LEADERBOARD FUNCTION IMPORTS:
+import {
+  sendFriendRequest,
+  respondToFriendRequest,
+} from "./leaderboard/friends";
 
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
 const app = express();
@@ -27,3 +37,5 @@ exports.api = onRequest(
     app(req, res);
   }
 );
+
+export { sendFriendRequest, respondToFriendRequest };
