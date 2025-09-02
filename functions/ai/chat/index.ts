@@ -10,11 +10,6 @@ let client: OpenAI | null = null;
 export const getChatResponse = onCall(
   { secrets: [openaiApiKey] },
   async (request) => {
-    const uid = request.auth?.uid;
-    if (!uid) {
-      throw new HttpsError("unauthenticated", "You must be logged in.");
-    }
-
     const { messages } = request.data;
     if (!messages) {
       throw new HttpsError(

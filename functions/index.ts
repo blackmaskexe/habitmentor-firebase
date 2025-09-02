@@ -9,4 +9,7 @@ export {
 // Import and export AI functions
 export { getChatResponse } from "./ai/chat";
 export { getTaggingSuggestions } from "./ai/tagging";
-export { getRecommendations } from "./ai/recommendations";
+export {
+  getEmotionAwareSuggestionResponse,
+  getProActiveRecommendationResponse,
+} from "./ai/recommendations";
