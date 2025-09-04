@@ -13,3 +13,5 @@ export {
   getEmotionAwareSuggestionResponse,
   getProActiveRecommendationResponse,
 } from "./ai/recommendations";
+
+export { deleteUserDataAndAccount } from "./leaderboard/profile";
