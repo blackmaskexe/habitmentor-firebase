@@ -23,8 +23,11 @@ export const sendFriendRequest = onCall(async (request) => {
   }
 
   // Fetch profiles to get nickname/avatar for denormalization
-  const senderDoc = await db.collection("users").doc(senderId).get();
-  const recipientDoc = await db.collection("users").doc(recipientId).get();
+  // running the fetches asynchronously for faster fetching
+  const [senderDoc, recipientDoc] = await Promise.all([
+    db.collection("users").doc(senderId).get(),
+    db.collection("users").doc(recipientId).get(),
+  ]);
 
   if (!senderDoc.exists || !recipientDoc.exists) {
     throw new HttpsError("not-found", "One of the users was not found.");
