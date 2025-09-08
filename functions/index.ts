@@ -15,4 +15,4 @@ export {
 } from "./ai/recommendations";
 
 export { deleteUserDataAndAccount } from "./leaderboard/profile";
-export { reportUser } from "./leaderboard/reporting";
+export { reportUser, blockUser } from "./leaderboard/reporting";
