@@ -22,6 +22,23 @@ export const sendFriendRequest = onCall(async (request) => {
     throw new HttpsError("invalid-argument", "Invalid recipient ID.");
   }
 
+  // Early check: has the recipient already blocked the sender?
+  const recipientFriendDoc = await db
+    .collection("users")
+    .doc(recipientId)
+    .collection("friends")
+    .doc(senderId)
+    .get();
+  if (
+    recipientFriendDoc.exists &&
+    recipientFriendDoc.data()?.status === "blocked"
+  ) {
+    throw new HttpsError(
+      "permission-denied",
+      "You cannot send a friend request to this user."
+    );
+  }
+
   // Fetch profiles to get nickname/avatar for denormalization
   // running the fetches asynchronously for faster fetching
   const [senderDoc, recipientDoc] = await Promise.all([
