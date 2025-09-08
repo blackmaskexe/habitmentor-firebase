@@ -80,14 +80,25 @@ export const blockUser = onCall(async (request) => {
       createdAt: blockedUserData?.createdAt || null,
     };
 
+    const batch = db.batch();
+
     // Set the friend entry in the blocker's friends subcollection
-    await db
+    const blockerFriendRef = db
       .collection("users")
       .doc(userId)
       .collection("friends")
-      .doc(gettingBlockedUserId)
-      .set(friendEntry, { merge: true });
+      .doc(gettingBlockedUserId);
+    batch.set(blockerFriendRef, friendEntry, { merge: true });
 
+    // Remove the blocker from the blocked user's friends subcollection if present
+    const blockedUserFriendRef = db
+      .collection("users")
+      .doc(gettingBlockedUserId)
+      .collection("friends")
+      .doc(userId);
+    batch.delete(blockedUserFriendRef);
+
+    await batch.commit();
     return { success: true, message: "User blocked successfully." };
   } catch (err) {
     console.log("failed to block user", err);
