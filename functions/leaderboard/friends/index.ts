@@ -127,3 +127,75 @@ export const respondToFriendRequest = onCall(async (request) => {
     );
   }
 });
+
+export const removeFriend = onCall(async (request) => {
+  try {
+    const userId = request.auth?.uid; // blocker's id
+    const { gettingRemovedUserId } = request.data; // id of the person getting blocked
+
+    if (!userId) {
+      throw new HttpsError(
+        "unauthenticated",
+        "You must be logged in to block a user"
+      );
+    }
+    if (
+      !gettingRemovedUserId ||
+      typeof gettingRemovedUserId !== "string" ||
+      gettingRemovedUserId.trim() === ""
+    ) {
+      throw new HttpsError(
+        "invalid-argument",
+        "A valid gettingBlockedUserId must be provided."
+      );
+    }
+
+    // Check if the user to be removed exists
+    const removedUserDoc = await db
+      .collection("users")
+      .doc(gettingRemovedUserId)
+      .get();
+
+    if (!removedUserDoc.exists) {
+      throw new HttpsError(
+        "not-found",
+        "The user you are trying to block does not exist."
+      );
+    }
+    const batch = db.batch();
+
+    // Remove the user from the removed user's friends subcollection if present
+    const blockedUsersYourFriendRef = db
+      .collection("users")
+      .doc(gettingRemovedUserId)
+      .collection("friends")
+      .doc(userId);
+
+    const ownUserRemovedFriendRef = db
+      .collection("users")
+      .doc(userId)
+      .collection("friends")
+      .doc(gettingRemovedUserId);
+
+    const [blockedUserYourFriendSnapshot, ownUserRemovedFriendSnapshot] =
+      await Promise.all([
+        blockedUsersYourFriendRef.get(),
+        ownUserRemovedFriendRef.get(),
+      ]);
+
+    if (
+      blockedUserYourFriendSnapshot.exists &&
+      ownUserRemovedFriendSnapshot.exists
+    ) {
+      batch.delete(blockedUsersYourFriendRef);
+      batch.delete(ownUserRemovedFriendRef);
+    }
+
+    await batch.commit();
+
+    return { success: true, message: "User blocked successfully." };
+  } catch (err) {
+    console.log("failed to block user", err);
+    throw new HttpsError("internal", "Faile to block the user");
+  }
+});
