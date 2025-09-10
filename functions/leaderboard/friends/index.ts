@@ -132,6 +132,10 @@ export const removeFriend = onCall(async (request) => {
   try {
     const userId = request.auth?.uid; // blocker's id
     const { gettingRemovedUserId } = request.data; // id of the person getting blocked
+    console.log(
+      "Oh you........ oh you..... oh i got it girl",
+      gettingRemovedUserId
+    );
 
     if (!userId) {
       throw new HttpsError(

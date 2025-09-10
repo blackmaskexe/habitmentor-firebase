@@ -4,6 +4,7 @@ import "./firebaseAdmin";
 export {
   sendFriendRequest,
   respondToFriendRequest,
+  removeFriend,
 } from "./leaderboard/friends";
 
 // Import and export AI functions
