@@ -105,3 +105,56 @@ export const blockUser = onCall(async (request) => {
     throw new HttpsError("internal", "Faile to block the user");
   }
 });
+
+export const unblockUser = onCall(async (request) => {
+  const userId = request.auth?.uid; // blocker's id
+  const { gettingUnblockedUserId } = request.data; // id of the person getting blocked
+
+  if (!userId) {
+    throw new HttpsError(
+      "unauthenticated",
+      "You must be logged in to block a user"
+    );
+  }
+  if (
+    !gettingUnblockedUserId ||
+    typeof gettingUnblockedUserId !== "string" ||
+    gettingUnblockedUserId.trim() === ""
+  ) {
+    throw new HttpsError(
+      "invalid-argument",
+      "A valid gettingUnblockedUser must be provided."
+    );
+  }
+
+  // what a block status means
+  // is that the user sending this unblock request
+  // has the user that is blocked in their friends with the status of 'blocked'
+  // we want to check if this is true, and if it is,
+  // we remove that friend's doc entirely, making the new
+  // status as nothing (have to send a friend request again to do shi)
+
+  const gettingUnblockedUserFriendDoc = await db
+    .collection("users")
+    .doc(userId)
+    .collection("friends")
+    .doc(gettingUnblockedUserId);
+
+  const gettingUnblockedUserFriendSnapshot =
+    await gettingUnblockedUserFriendDoc.get();
+
+  if (
+    gettingUnblockedUserFriendSnapshot &&
+    gettingUnblockedUserFriendSnapshot.exists
+  ) {
+    const blockedUserData = gettingUnblockedUserFriendSnapshot.data();
+    if (blockedUserData?.status == "blocked") {
+      await gettingUnblockedUserFriendDoc.delete();
+      return {
+        success: true,
+        message: "user unblocked successfully",
+      };
+    } else throw new HttpsError("invalid-argument", "user is not blocked.");
+  } else
+    throw new HttpsError("not-found", "blocked user relationship not found!");
+});
